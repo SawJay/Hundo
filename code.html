@@ -63,27 +63,112 @@
             <div class="col-12 col-lg-8">
                 <pre class="line-numbers">
                     <code class="language-js">
-                        function displayMessage() {
-                            let inputBox = document.getElementById('message');
-                            let message = inputBox.value;
-                        
-                            Swal.fire({
-                                title: "CountUP!",
-                                text: message,
-                                icon: "success",
+                        function getValues() {
+                            // get the input element for startNumber and grab its value
+                            let startNumber = document.getElementById('startNumber').value;
+                          
+                            // do the same for endNumber
+                            let endNumber = document.getElementById('endNumber').value;
+                          
+                            startNumber = Number(startNumber)
+                            endNumber = Number(endNumber)
+                          
+                            if (isNaN(startNumber) || isNaN(endNumber)) {
+                              Swal.fire({
+                                icon: 'error',
+                                title: 'Oops!',
+                                text: 'Please enter valid numbers for CountUP! to use.',
                                 backdrop: false
-                              });
-                        }
+                              })
+                            } else if ((startNumber > endNumber) || (startNumber < 0) || (endNumber > 100)) {
+                              Swal.fire({
+                                icon: 'error',
+                                title: 'Oops!',
+                                text: 'Please enter valid numbers for CountUP! to use.',
+                                backdrop: false
+                              })
+                          
+                            } else {
+                              let generatedNumbers = generateValues(startNumber, endNumber);
+                          
+                              displayValues(generatedNumbers);
+                            }
+                          
+                          }
+                          
+                          
+                          // Generate a list of numbers between those two values
+                          
+                          function generateValues(start, end) {
+                            let numbers = [];
+                          
+                            for (let i = start; i <= end; i++) {
+                              numbers.push(i);
+                            }
+                          
+                            return numbers;
+                          
+                          }
+                          
+                          // Display them in my results table
+                          
+                          function displayValues(numberArray) {
+                            // numberArray = [2, 3, 4, 5, 6, 7]
+                            // index  0  1  2  3  4  5
+                            let tableHtml = '';
+                          
+                            for (let index = 0; index < numberArray.length; index += 1) {
+                          
+                              let number = numberArray[index];
+                          
+                              let className = '';
+                          
+                              if (number % 2 == 0) {
+                                className = 'even';
+                              } else {
+                                className = 'odd';
+                              }
+                          
+                              tableHtml += `<tr><td class="${className}">${number}</td></tr>`;
+                          
+                            }
+                          
+                            let tbody = document.getElementById('results');
+                            tbody.innerHTML = tableHtml;
+                          
+                          }
                     </code>
                 </pre>
             </div>
             <!-- The Codes explanation -->
             <div class="col-12 col-lg-4">
                 <p>The Code is strctured in one function.</p>
-                <h5><code>displayMessage()</code></h5>
+                <h5><code>getValues() Function</code></h5>
                 <p>
-                    The <code>displayMessage</code> function gets the text from the input element and displays it in a
-                    Sweet Alert popup.
+                    The <code>getValues</code> function acquires two input values from the user and converts them from
+                    HTML strings
+                    to numbers. It then validates the two numbers; if they are not valid, an error message is sent.
+                    Then the function invokes the <code>generateValues</code> function with the parameters
+                    "startNumber" and "endNumber." Finally, it calls the <code>displayValues</code> function with
+                    "generatedNumbers" as the
+                    parameter.
+                </p>
+                <p>
+                    <code>generateValues</code> Function:
+                    The <code>generateValues</code> function initializes an array named "numbers." It then initiates a
+                    for-loop starting from the "startNumber" and continuing until it reaches or exceeds the "endNumber."
+                    Within each iteration, the function adds each number between "startNumber" and "endNumber" to the
+                    "numbers" array. Ultimately, it returns this array to the getValues function.
+                </p>
+                <p>
+                    <code>displayValues</code> Function:
+                    Given an array as input, the displayValues function initializes an empty string variable named
+                    "tableHtml," which serves as the content for the table's tbody. Then, it begins a for-loop that
+                    iterates until the index is greater than or equal to the length of the array. Within each iteration,
+                    two if-statements categorize each number as either even or odd, with even numbers being styled as
+                    bold through CSS. During each iteration, the "tableHtml" string accumulates each number. Finally, a
+                    new variable named "tbody" is linked to the document's tbody class named "results," and the content
+                    of "tableHtml" is transferred to it.
                 </p>
             </div>
         </div>
